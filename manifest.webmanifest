@@ -1,0 +1,18 @@
+{
+  "name": "Dossiê Veicular — compra segura de usado",
+  "short_name": "Dossiê Veicular",
+  "description": "Análise pré-compra de veículo usado: consultas oficiais, inspeção, preço FIPE, proteção contra golpes e laudo com decisão.",
+  "lang": "pt-BR",
+  "start_url": "/?origem=app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#161B21",
+  "theme_color": "#161B21",
+  "categories": ["utilities", "shopping", "auto"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

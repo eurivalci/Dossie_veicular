@@ -13,7 +13,10 @@ api/fipe.js             Proxy da Tabela FIPE (Parallelum v1), caminhos em lista 
 api/saude.js            Diz ao app o que o servidor oferece (consulta por placa, FIPE).
 api/_lib/http.js        CORS por lista, rate limit, timeout, respostas JSON, máscara de placa.
 api/_lib/normalizar.js  Converte a resposta do provedor no contrato do front.
-vercel.json             Cabeçalhos de segurança (CSP, HSTS, nosniff).
+manifest.webmanifest    App instalável (PWA): nome, ícones, tela cheia.
+sw.js                   Service worker: abre offline; nunca guarda respostas de /api/*.
+icons/                  Ícones 192, 512, maskable e apple-touch-icon.
+vercel.json             Cabeçalhos de segurança (CSP, HSTS, nosniff) e cache do service worker.
 test/                   Testes do backend, do front e de integração (fora do deploy).
 ```
 
@@ -30,6 +33,24 @@ Princípios:
   o que o vendedor apresentou; divergência de chassi ou RENAVAM é impedimento (indício de clonagem).
 - **Chaves só no servidor** e **LGPD**: o proxy não repassa nome, CPF ou endereço do proprietário;
   logs mascaram a placa; o laudo mascara o CPF de quem vende.
+
+## Cobertura nacional
+
+As 27 UFs estão no seletor, sem estado pré-escolhido. Cada consulta de débito e restrição aponta
+para o Detran da UF de registro (`detran.<uf>.gov.br`). Sem UF, o app mostra um achado pedindo a
+UF; com servidor configurado, a UF vem do registro consultado. O app alerta que consulta oficial só
+acontece em endereço `.gov.br`, porque há sites falsos imitando Detran e Senatran.
+
+## Celular e app
+
+- Barra fixa compacta (placa e decisão; toque na decisão para ver as notas), abas de etapas no
+  rodapé, alvos de toque de 44 px e campos de 16 px (sem zoom automático no iPhone).
+- **PWA**: hospedado na Vercel, o navegador oferece "Instalar app" (Android e desktop); no iPhone,
+  Compartilhar → Adicionar à Tela de Início. Abre sem internet com os dossiês salvos no aparelho.
+- **Lojas**: o mesmo PWA vai para a Google Play como TWA (Bubblewrap, com `assetlinks.json` no
+  domínio). Para a App Store, empacote com Capacitor e acrescente recursos nativos (câmera para
+  ler o QR code da placa e fotografar a vistoria): a Apple costuma recusar app que é só um site
+  embrulhado (diretriz 4.2).
 
 ## Motor de decisão
 
@@ -107,9 +128,10 @@ Contrato esperado pelo front (`GET /api/veiculo?placa=ABC1D23`):
 
 ```
 node test/backend.test.mjs                 # normalizador, mock, CORS, origem, caminhos FIPE (13)
-python3 test/front_e2e.py                  # validadores, motor, achados, XSS, importação (38)
+python3 test/front_e2e.py                  # validadores, 27 UFs, motor, achados, XSS, importação (43)
 node test/servidor-local.mjs &             # emula a Vercel em http://localhost:8788
 python3 test/integracao.py                 # front + funções + FIPE pelo proxy (15)
+python3 test/mobile_pwa.py                 # 360, 390 e 768 px, toque, abas, PWA offline (49)
 ```
 
 Os testes de navegador usam Playwright (`pip install playwright && playwright install chromium`).

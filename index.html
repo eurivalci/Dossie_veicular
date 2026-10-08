@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dossiê Veicular — compra segura de usado</title>
+<meta name="description" content="Análise pré-compra de veículo usado: consultas oficiais, inspeção, preço FIPE, proteção contra golpes e laudo com decisão.">
+<meta name="theme-color" content="#161B21">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dossiê Veicular">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -47,10 +55,6 @@ p{margin:0 0 10px}
 .app{display:grid;grid-template-columns:340px minmax(0,1fr);min-height:100vh}
 .rail{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:22px 20px;border-right:1px solid var(--line);background:var(--panel)}
 .main{padding:26px clamp(16px,3vw,40px) 80px;max-width:1040px}
-@media (max-width:900px){
-  .app{grid-template-columns:1fr}
-  .rail{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
-}
 .brand{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:18px}
 .brand h1{font-size:24px}
 .brand small{color:var(--ink3);font-size:12px}
@@ -166,13 +170,66 @@ dialog{border:1px solid var(--line);border-radius:var(--r-md);background:var(--p
 dialog::backdrop{background:#0008}
 .toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:var(--r-sm);font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9}
 .toast.on{opacity:1}
+
+.rail-nav .sm,.menu-btn,.mob-only{display:none}
+section.step{scroll-margin-top:12px}
+@media (max-width:900px){
+  body{font-size:16px}
+  .app{display:block}
+  .rail{position:sticky;top:0;z-index:5;height:auto;padding:8px 12px;border-bottom:1px solid var(--line);
+        display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"plate verdict brand" "tools tools tools";gap:6px 8px;align-items:center}
+  .brand{grid-area:brand;margin:0;align-self:stretch}
+  .brand h1,.brand small{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .menu-btn{display:inline-flex;align-items:center;justify-content:center;height:100%;min-width:44px;padding:0 8px;font-size:22px;line-height:1}
+  .plate{grid-area:plate;width:138px;border-width:2px;border-radius:7px}
+  .plate-band{font-size:9px;padding:1px 6px}
+  .plate-band .flag{width:12px;height:8px}
+  .plate input{font-size:24px;letter-spacing:.03em;padding:0 2px 2px}
+  .plate-meta{display:none}
+  .verdict{grid-area:verdict;margin:0;padding:6px 10px;cursor:pointer}
+  .verdict .v-title{font-size:20px}
+  .verdict .v-reason{font-size:12px;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .verdict .axes,.verdict .cover{display:none}
+  .verdict[aria-expanded="true"] .axes,.verdict[aria-expanded="true"] .cover{display:grid}
+  .verdict[aria-expanded="true"] .v-reason{-webkit-line-clamp:unset;display:block}
+  .rail-tools{grid-area:tools;display:none;margin:4px 0 6px}
+  .rail-tools.open{display:flex}
+  .rail-nav{position:fixed;left:0;right:0;bottom:0;z-index:6;margin:0;display:grid;grid-template-columns:repeat(6,1fr);gap:0;
+            background:var(--panel);border-top:1px solid var(--line);padding:0 0 env(safe-area-inset-bottom,0px)}
+  .rail-nav a{flex-direction:column;align-items:center;justify-content:center;gap:0;padding:7px 2px 6px;min-height:52px;border-radius:0;font-size:12px;text-align:center}
+  .rail-nav a[aria-current="true"]{box-shadow:inset 0 3px 0 var(--blue)}
+  .rail-nav .lg{display:none}
+  .rail-nav .sm{display:block;font-weight:500}
+  .rail-nav .cnt{font-size:10px}
+  .main{padding:16px 14px calc(84px + env(safe-area-inset-bottom,0px))}
+  section.step{scroll-margin-top:var(--topbar,150px)}
+  .mob-only{display:block;color:var(--ink2);font-size:14px}
+  h2{font-size:25px}
+  .step-head{gap:10px}
+  .step-no{width:30px;height:30px;font-size:15px}
+  .grid{grid-template-columns:1fr 1fr;gap:10px}
+  .f input,.f select,.f textarea{font-size:16px;min-height:44px}
+  .btn{min-height:44px;font-size:15px}
+  .row .note input{font-size:16px;min-height:40px}
+  .seg{display:flex;width:100%;height:auto}
+  .seg button{flex:1 1 0;font-size:14px;padding:0 4px;min-height:44px}
+  .fin-out{grid-template-columns:1fr 1fr;gap:8px}
+  .kv{padding:10px}
+  .kv .v{font-size:22px}
+  .axis{grid-template-columns:86px 1fr 30px}
+  .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px))}
+}
+@media (max-width:420px){
+  .grid{grid-template-columns:1fr}
+  .fin-out{grid-template-columns:1fr 1fr}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
 @media print{
   :root{--bg:#fff;--panel:#fff;--panel2:#fff;--ink:#000;--ink2:#222;--ink3:#555;--line:#bbb}
   body{background:#fff}
   .app{display:block}
-  .rail,.no-print,section.step:not(#s-laudo){display:none!important}
+  .rail,.rail-nav,.no-print,section.step:not(#s-laudo){display:none!important}
   .main{max-width:none;padding:0}
   #s-laudo{border:0;padding:0}
   #s-laudo .step-head{display:none}
@@ -183,14 +240,15 @@ dialog::backdrop{background:#0008}
 <body>
 <div class="app">
   <aside class="rail" aria-label="Resumo do dossiê">
-    <div class="brand"><h1>Dossiê Veicular</h1><small>EDP Sistemas</small></div>
+    <div class="brand"><h1>Dossiê Veicular</h1><small>EDP Sistemas</small>
+      <button class="btn menu-btn" id="bMenu" aria-expanded="false" aria-controls="tools" aria-label="Menu: dossiês, exportar, tema e instalar">☰</button></div>
     <div class="plate" role="group" aria-label="Placa do veículo">
       <div class="plate-band"><span>BRASIL</span><span class="flag" aria-hidden="true"></span></div>
       <input id="placa" maxlength="8" autocomplete="off" spellcheck="false" placeholder="ABC1D23" aria-label="Placa" inputmode="text">
     </div>
     <div class="plate-meta" id="placaMeta" aria-live="polite">Digite a placa para começar.</div>
 
-    <div class="verdict" id="verdict" data-v="incomplete" aria-live="polite">
+    <div class="verdict" id="verdict" data-v="incomplete" aria-live="polite" tabindex="0" aria-expanded="false" aria-label="Decisão do laudo; toque para ver as notas">
       <div class="v-title" id="vTitle">Laudo incompleto</div>
       <div class="v-reason" id="vReason">Faça as consultas essenciais para liberar uma decisão.</div>
       <div class="axes" id="axes"></div>
@@ -198,21 +256,23 @@ dialog::backdrop{background:#0008}
     </div>
 
     <nav class="rail-nav" aria-label="Etapas">
-      <a href="#s-veiculo" data-nav="s-veiculo">1. Veículo <span class="cnt" id="n-veiculo"></span></a>
-      <a href="#s-consultas" data-nav="s-consultas">2. Consultas de registro <span class="cnt" id="n-consultas"></span></a>
-      <a href="#s-inspecao" data-nav="s-inspecao">3. Inspeção física <span class="cnt" id="n-inspecao"></span></a>
-      <a href="#s-financeiro" data-nav="s-financeiro">4. Preço e custo real <span class="cnt" id="n-fin"></span></a>
-      <a href="#s-golpes" data-nav="s-golpes">5. Negociação e pagamento <span class="cnt" id="n-golpes"></span></a>
-      <a href="#s-laudo" data-nav="s-laudo">6. Laudo e decisão</a>
+      <a href="#s-veiculo" data-nav="s-veiculo"><span class="lg">1. Veículo</span><span class="sm">Veículo</span> <span class="cnt" id="n-veiculo"></span></a>
+      <a href="#s-consultas" data-nav="s-consultas"><span class="lg">2. Consultas de registro</span><span class="sm">Registro</span> <span class="cnt" id="n-consultas"></span></a>
+      <a href="#s-inspecao" data-nav="s-inspecao"><span class="lg">3. Inspeção física</span><span class="sm">Inspeção</span> <span class="cnt" id="n-inspecao"></span></a>
+      <a href="#s-financeiro" data-nav="s-financeiro"><span class="lg">4. Preço e custo real</span><span class="sm">Preço</span> <span class="cnt" id="n-fin"></span></a>
+      <a href="#s-golpes" data-nav="s-golpes"><span class="lg">5. Negociação e pagamento</span><span class="sm">Pagar</span> <span class="cnt" id="n-golpes"></span></a>
+      <a href="#s-laudo" data-nav="s-laudo"><span class="lg">6. Laudo e decisão</span><span class="sm">Laudo</span></a>
     </nav>
 
-    <div class="rail-tools no-print">
+    <div class="rail-tools no-print" id="tools">
       <select id="dossieSel" class="btn" aria-label="Dossiês salvos" style="flex:1 1 100%"></select>
       <button class="btn" id="bNovo">Novo dossiê</button>
       <button class="btn" id="bExport">Exportar</button>
       <button class="btn" id="bImport">Importar</button>
       <button class="btn danger" id="bExcluir">Excluir</button>
       <button class="btn" id="bTema" aria-label="Alternar tema claro e escuro">Tema</button>
+      <button class="btn primary" id="bInstalar" hidden>Instalar app</button>
+      <p class="small muted" id="iosHint" hidden style="flex-basis:100%;margin:4px 0 0">No iPhone: toque em Compartilhar e depois em "Adicionar à Tela de Início".</p>
       <input type="file" id="fImport" accept="application/json,.json" hidden>
     </div>
   </aside>
@@ -222,6 +282,7 @@ dialog::backdrop{background:#0008}
     <section class="step" id="s-veiculo">
       <div class="step-head"><div class="step-no">1</div><div>
         <h2>Identifique o veículo</h2>
+        <p class="mob-only" id="placaMeta2"></p>
         <p>Copie os dados do CRLV-e que o vendedor enviar, não do anúncio. O sistema confere os formatos e decodifica o chassi para comparar com o que está sendo vendido.</p>
       </div></div>
       <div class="grid">
@@ -272,7 +333,7 @@ dialog::backdrop{background:#0008}
     <section class="step" id="s-consultas">
       <div class="step-head"><div class="step-no">2</div><div>
         <h2>Consulte o histórico de registro</h2>
-        <p>Cada linha diz onde consultar, o que a consulta revela e o que fazer com o resultado. As fontes oficiais vêm primeiro e são gratuitas; as privadas cobrem leilão e sinistro, que o governo não publica. Marque o resultado e anote o que encontrou.</p>
+        <p>Vale para veículos registrados em qualquer estado. Cada linha diz onde consultar, o que a consulta revela e o que fazer com o resultado. As fontes oficiais vêm primeiro e são gratuitas; as privadas cobrem leilão e sinistro, que o governo não publica. Marque o resultado e anote o que encontrou.</p>
       </div></div>
       <div class="callout no-print" id="connBox">
         <strong>Consulta automática.</strong> <span id="connMsg">Verificando servidor…</span>
@@ -281,6 +342,7 @@ dialog::backdrop{background:#0008}
           <button class="btn primary" id="bConsultar" disabled>Consultar agora</button>
         </div>
       </div>
+      <div class="callout warn">Consultas oficiais são feitas só em endereços que terminam em <strong>.gov.br</strong>. Existem sites que imitam o Detran e a Senatran para cobrar taxas falsas ou roubar dados: desconfie de qualquer cobrança por consulta em site que não seja .gov.br.</div>
       <div id="listConsultas"></div>
     </section>
 
@@ -485,9 +547,14 @@ const V = {
    peso: 1 leve · 2 relevante · 3 crítico
    bloq: "problema" nesse item impede a compra
    essencial: precisa ter resposta para o laudo emitir decisão */
-const UFS = "AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO".split(" ");
-const DETRAN = { CE: "https://www.detran.ce.gov.br/", SP: "https://www.detran.sp.gov.br/", RJ: "https://www.detran.rj.gov.br/", DF: "https://www.detran.df.gov.br/", PR: "https://www.detran.pr.gov.br/", RS: "https://www.detran.rs.gov.br/", SC: "https://www.detran.sc.gov.br/", BA: "https://www.detran.ba.gov.br/", PE: "https://www.detran.pe.gov.br/", GO: "https://www.detran.go.gov.br/" };
-const detranUrl = uf => DETRAN[uf] || "https://www.google.com/search?q=" + encodeURIComponent("Detran " + (uf || "") + " consulta veículo débitos restrições site oficial");
+const UF_NOMES = { AC: "Acre", AL: "Alagoas", AP: "Amapá", AM: "Amazonas", BA: "Bahia", CE: "Ceará", DF: "Distrito Federal", ES: "Espírito Santo", GO: "Goiás", MA: "Maranhão", MT: "Mato Grosso", MS: "Mato Grosso do Sul", MG: "Minas Gerais", PA: "Pará", PB: "Paraíba", PR: "Paraná", PE: "Pernambuco", PI: "Piauí", RJ: "Rio de Janeiro", RN: "Rio Grande do Norte", RS: "Rio Grande do Sul", RO: "Rondônia", RR: "Roraima", SC: "Santa Catarina", SP: "São Paulo", SE: "Sergipe", TO: "Tocantins" };
+const UFS = Object.keys(UF_NOMES);
+// Todos os Detrans seguem o domínio oficial detran.<uf>.gov.br. Sites que imitam o Detran fora do .gov.br são golpe.
+const detranUrl = uf => UFS.includes(uf) ? `https://www.detran.${uf.toLowerCase()}.gov.br/` : null;
+const detranFonte = (s, tag) => {
+  const u = detranUrl(s.v.uf);
+  return u ? [{ t: "Detran-" + s.v.uf, u, tag }] : [{ t: "Escolha a UF de registro na etapa 1 para ver o Detran certo", u: "#uf", tag: "pendente" }];
+};
 
 const L = {
   sinesp: { t: "Sinesp Cidadão (app, conta gov.br)", u: "https://www.gov.br/pt-br/servicos/consultar-veiculo", tag: "oficial · grátis" },
@@ -504,18 +571,18 @@ const L = {
 const CONSULTAS = [
   { id: "roubo", g: "Situação criminal", t: "Roubo, furto ou clonagem", peso: 3, bloq: true, ess: true,
     d: "Consulte a placa. Confira se marca, modelo e cor do resultado batem com o carro à sua frente: se não baterem, a placa pode ser clonada.",
-    fontes: ["sinesp"], extra: s => [{ t: "Detran " + (s.v.uf || "da UF"), u: detranUrl(s.v.uf), tag: "oficial · grátis" }] },
+    fontes: ["sinesp"], extra: s => detranFonte(s, "oficial · grátis") },
   { id: "titular", g: "Situação criminal", t: "Vendedor é o titular do documento", peso: 3, bloq: true, ess: true,
     d: "O nome no CRLV-e deve ser o do documento com foto de quem vende. Se for loja, o carro deve estar no nome da loja ou com ATPV-e emitida para ela.", fontes: [] },
   { id: "debitos", g: "Débitos e bloqueios", t: "IPVA, multas e licenciamento", peso: 2, bloq: false, ess: true,
     d: "Débitos acompanham o veículo e impedem a transferência. Lance os valores na etapa 4 e combine por escrito quem paga.",
-    fontes: [], extra: s => [{ t: "Detran " + (s.v.uf || "da UF"), u: detranUrl(s.v.uf), tag: "oficial · grátis" }] },
+    fontes: [], extra: s => detranFonte(s, "oficial · grátis") },
   { id: "gravame", g: "Débitos e bloqueios", t: "Financiamento ativo (gravame)", peso: 3, bloq: true, ess: true,
     d: "Carro com alienação fiduciária ainda pertence ao banco. Só compre se a quitação e a baixa do gravame acontecerem antes ou no ato, com comprovante do banco.",
-    fontes: ["olho", "checkauto"], extra: s => [{ t: "Detran " + (s.v.uf || "da UF"), u: detranUrl(s.v.uf), tag: "oficial" }] },
+    fontes: ["olho", "checkauto"], extra: s => detranFonte(s, "oficial") },
   { id: "judicial", g: "Débitos e bloqueios", t: "Restrição judicial ou administrativa", peso: 3, bloq: true, ess: true,
     d: "Bloqueios do Renajud (penhora, busca e apreensão) e restrições administrativas aparecem na consulta do Detran. Com restrição de transferência, não há como passar para o seu nome.",
-    fontes: [], extra: s => [{ t: "Detran " + (s.v.uf || "da UF"), u: detranUrl(s.v.uf), tag: "oficial · grátis" }] },
+    fontes: [], extra: s => detranFonte(s, "oficial · grátis") },
   { id: "recall", g: "Débitos e bloqueios", t: "Recall pendente", peso: 1, bloq: false, ess: false,
     d: "Recall não atendido impede o licenciamento. O reparo é gratuito na concessionária, mas exija que seja feito antes da compra.",
     fontes: ["senatran", "cnh"] },
@@ -611,6 +678,7 @@ function achados(v, reg) {
     if (idade >= 3 && kmAno < 4000) add("alerta", "Quilometragem muito baixa para a idade", "Cerca de " + Math.round(kmAno).toLocaleString("pt-BR") + " km por ano. Pode ser real, mas também é o padrão de hodômetro adulterado: confirme com revisões e desgaste.");
     else if (kmAno > 30000) add("alerta", "Uso intenso", "Cerca de " + Math.round(kmAno).toLocaleString("pt-BR") + " km por ano, típico de aplicativo, táxi ou frota.");
   }
+  if (!v.uf && (pl.ok || rn.ok || ch.ok)) add("alerta", "UF de registro não informada", "Débitos, multas e restrições ficam no Detran da UF onde o carro está registrado. Ela aparece no CRLV-e.");
   if (!dc.vazio && !dc.ok) add("alerta", "CPF ou CNPJ de quem vende é inválido", "Peça o documento com foto e confira os números.");
   const a = V.normNome(v.titular), b = V.normNome(v.nomeVend);
   if (a && b && a !== b && !a.includes(b) && !b.includes(a) && v.vendedor !== "loja" && v.vendedor !== "leilao")
@@ -629,7 +697,7 @@ function achados(v, reg) {
 /* ---------- estado ---------- */
 function novoDossie() {
   return { schema: SCHEMA, id: uid(), criado: new Date().toISOString(), atualizado: new Date().toISOString(),
-    v: { perfil: "comprador", tipo: "cars", vendedor: "particular", uf: "CE", placa: "", renavam: "", chassi: "", modelo: "", anoFab: "", anoMod: "", cor: "", km: "", motor: "", combustivel: "", titular: "", nomeVend: "", docVend: "" },
+    v: { perfil: "comprador", tipo: "cars", vendedor: "particular", uf: "", placa: "", renavam: "", chassi: "", modelo: "", anoFab: "", anoMod: "", cor: "", km: "", motor: "", combustivel: "", titular: "", nomeVend: "", docVend: "" },
     reg: null,
     c: {}, i: {}, g: {}, f: { preco: "", fipe: "", ipva: "", multas: "", licenc: "", pagaDeb: "vendedor", reparos: "", transf: "", cautelar: "", outros: "", fipeRef: "" } };
 }
@@ -731,7 +799,9 @@ function segButtons(kind, id, opts, current, ruim) {
 function fonteLinks(def) {
   const arr = (def.fontes || []).map(k => L[k]).concat(def.extra ? def.extra(S) : []);
   if (!arr.length) return "";
-  return '<div class="src">' + arr.map(f => `<a href="${esc(f.u)}" target="_blank" rel="noopener noreferrer">${esc(f.t)}</a> <span class="tag">${esc(f.tag)}</span>`).join("") + "</div>";
+  return '<div class="src">' + arr.map(f => f.u.startsWith("#")
+    ? `<a href="${esc(f.u)}">${esc(f.t)}</a>`
+    : `<a href="${esc(f.u)}" target="_blank" rel="noopener noreferrer">${esc(f.t)}</a> <span class="tag">${esc(f.tag)}</span>`).join("") + "</div>";
 }
 function renderLista(el, kind, defs, store_) {
   let html = "", g = null;
@@ -776,6 +846,7 @@ function renderAchados() {
 }
 function renderVeiculoMsgs() {
   const pl = V.placa(S.v.placa), m = $("#placaMeta");
+  queueMicrotask(() => { $("#placaMeta2").innerHTML = m.innerHTML; });
   if (pl.vazio) m.textContent = "Digite a placa para começar.";
   else if (!pl.ok) m.innerHTML = `<span style="color:var(--bad)">${esc(pl.erro)}</span>`;
   else m.textContent = pl.formato === "antigo" ? "Placa antiga. Na Mercosul fica " + pl.equivalente + "." : (pl.equivalente ? "Placa Mercosul. No formato antigo era " + pl.equivalente + "; consultas antigas podem usar esse." : "Placa Mercosul de série nova.");
@@ -854,7 +925,7 @@ function renderReport(A) {
       <tr><th>Chassi</th><td>${esc(v.chassi || "—")}</td><th>Motor</th><td>${esc(v.motor || "—")}</td></tr>
       <tr><th>Marca e modelo</th><td>${esc(v.modelo || "—")}</td><th>Ano</th><td>${esc((v.anoFab || "—") + "/" + (v.anoMod || "—"))}</td></tr>
       <tr><th>Cor</th><td>${esc(v.cor || "—")}</td><th>Quilometragem</th><td>${esc(v.km || "—")}</td></tr>
-      <tr><th>UF</th><td>${esc(v.uf)}</td><th>Combustível</th><td>${esc(v.combustivel || "—")}</td></tr>
+      <tr><th>UF</th><td>${esc(v.uf ? v.uf + " · " + UF_NOMES[v.uf] : "—")}</td><th>Combustível</th><td>${esc(v.combustivel || "—")}</td></tr>
       <tr><th>Tipo de venda</th><td>${esc(vendNome)}</td><th>Titular no CRLV-e</th><td>${esc(v.titular || "—")}</td></tr>
       <tr><th>Quem vende</th><td>${esc(v.nomeVend || "—")}</td><th>Documento</th><td>${esc(V.doc(v.docVend).ok ? V.mascaraDoc(V.doc(v.docVend).doc) : (v.docVend ? "inválido" : "—"))}</td></tr>
       ${S.reg ? `<tr><th>Registro consultado</th><td colspan="3">${esc(S.reg.fonte || "servidor")} em ${esc(new Date(S.reg.consultadoEm || Date.now()).toLocaleString("pt-BR"))}</td></tr>` : ""}
@@ -907,7 +978,7 @@ function renderAll(full) {
 const VF = ["perfil", "tipo", "vendedor", "uf", "renavam", "chassi", "modelo", "anoFab", "anoMod", "cor", "km", "motor", "combustivel", "titular", "nomeVend", "docVend"];
 const FF = ["preco", "fipe", "ipva", "multas", "licenc", "pagaDeb", "reparos", "transf", "cautelar", "outros"];
 function fillForm() {
-  $("#uf").innerHTML = UFS.map(u => `<option>${u}</option>`).join("");
+  $("#uf").innerHTML = '<option value="">Selecione</option>' + UFS.map(u => `<option value="${u}">${u} · ${esc(UF_NOMES[u])}</option>`).join("");
   $("#placa").value = S.v.placa || "";
   VF.forEach(k => { const el = $("#" + k); if (el) el.value = S.v[k] ?? ""; });
   FF.forEach(k => { const el = $("#" + k); if (el) el.value = S.f[k] ?? ""; });
@@ -955,7 +1026,7 @@ function sanitize(o) {
   const str = (x, max = 200) => typeof x === "string" ? x.slice(0, max) : "";
   for (const k in d.v) if (k in (o.v || {})) d.v[k] = str(o.v[k]);
   for (const k in d.f) if (k in (o.f || {})) d.f[k] = str(o.f[k]);
-  if (!UFS.includes(d.v.uf)) d.v.uf = "CE";
+  if (!UFS.includes(d.v.uf)) d.v.uf = "";
   const okS = { c: ["ok", "alerta", "problema"], i: ["ok", "alerta", "problema"], g: ["sim", "nao"] };
   const defs = { c: CONSULTAS, i: INSPECAO, g: GOLPES };
   for (const k of ["c", "i", "g"]) for (const def of defs[k]) {
@@ -1146,6 +1217,7 @@ function aplicarRegistro(r) {
   if (!S.v.anoFab && v.anoFabricacao) S.v.anoFab = String(v.anoFabricacao);
   if (!S.v.anoMod && v.anoModelo) S.v.anoMod = String(v.anoModelo);
   if (!S.v.cor && v.cor) S.v.cor = v.cor;
+  if (!S.v.uf && UFS.includes(v.uf)) S.v.uf = v.uf;
   return n;
 }
 function bindConn() {
@@ -1170,6 +1242,37 @@ function bindConn() {
   });
 }
 
+/* ---------- celular: menu, veredito expansível, altura da barra fixa ---------- */
+function bindMobile() {
+  const menu = $("#bMenu"), tools = $("#tools"), vd = $("#verdict");
+  menu.addEventListener("click", () => { const o = tools.classList.toggle("open"); menu.setAttribute("aria-expanded", String(o)); medirTopo(); });
+  const alterna = () => { if (!matchMedia("(max-width:900px)").matches) return; vd.setAttribute("aria-expanded", String(vd.getAttribute("aria-expanded") !== "true")); medirTopo(); };
+  vd.addEventListener("click", alterna);
+  vd.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); alterna(); } });
+  document.querySelectorAll(".rail-nav a").forEach(a => a.addEventListener("click", () => {
+    if (tools.classList.contains("open")) { tools.classList.remove("open"); menu.setAttribute("aria-expanded", "false"); }
+    if (vd.getAttribute("aria-expanded") === "true") vd.setAttribute("aria-expanded", "false");
+    medirTopo();
+  }));
+  addEventListener("resize", medirTopo); medirTopo();
+}
+function medirTopo() { requestAnimationFrame(() => document.documentElement.style.setProperty("--topbar", ($(".rail").offsetHeight + 8) + "px")); }
+
+/* ---------- app instalável (PWA): só quando hospedado no próprio domínio ---------- */
+function bindPWA() {
+  const hospedado = /^https?:$/.test(location.protocol) && !/(^|\.)claude\.ai$|claudeusercontent\.com$/.test(location.hostname);
+  if (!hospedado) return;
+  if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  }
+  let evento = null; const b = $("#bInstalar");
+  addEventListener("beforeinstallprompt", e => { e.preventDefault(); evento = e; b.hidden = false; });
+  b.addEventListener("click", async () => { if (!evento) return; evento.prompt(); await evento.userChoice.catch(() => {}); evento = null; b.hidden = true; });
+  addEventListener("appinstalled", () => { b.hidden = true; toast("App instalado."); });
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) && !matchMedia("(display-mode: standalone)").matches && !navigator.standalone;
+  if (ios) $("#iosHint").hidden = false;
+}
+
 /* ---------- navegação ativa ---------- */
 function bindNav() {
   const links = [...document.querySelectorAll("[data-nav]")];
@@ -1181,7 +1284,7 @@ function bindNav() {
 /* ---------- inicialização ---------- */
 (function init() {
   const t = store.get(LS_THEME, null); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
-  fillForm(); bindForm(); bindDossies(); bindFipe(); bindConn(); bindNav(); connStatus(); renderSel(); renderAll(true); sondarServidor();
+  fillForm(); bindForm(); bindDossies(); bindFipe(); bindConn(); bindNav(); bindMobile(); bindPWA(); connStatus(); renderSel(); renderAll(true); sondarServidor();
   window.__DV = { V, avaliar, achados, financeiro, sanitize, aplicarRegistro, num, get S() { return S; } }; // ganchos de teste
 })();
 </script>
