@@ -1,0 +1,23 @@
+import assert from 'assert';
+const D=new URL('../api/', import.meta.url).href;
+const veic=(await import(D+'veiculo.js')).default, fipe=(await import(D+'fipe.js')).default, saude=(await import(D+'saude.js')).default;
+const {normalizar,booleano,dinheiro}=await import(D+'_lib/normalizar.js');
+function call(h,{method='GET',query={},origin,host='app.test'}={}){return new Promise(async ok=>{const res={h:{},statusCode:0,setHeader(k,v){this.h[k]=v},end(b){ok({code:this.statusCode,h:this.h,b:b?JSON.parse(b):null})}};await h({method,query,headers:{origin,host,'x-forwarded-for':'9.9.9.'+Math.floor(Math.random()*999)}},res)})}
+let n=0;const t=(c,m)=>{assert.ok(c,m);n++};
+t(booleano('Nada consta')===false&&booleano('SIM')===true&&booleano({x:1})===null&&booleano(null)===null,'booleano');
+t(dinheiro('1.830,50')===1830.5&&dinheiro('')===null,'dinheiro');
+const z=normalizar({nome_proprietario:'FULANO',cpf:'123'},{placa:'ABC1D23',fonte:'x'});
+t(!JSON.stringify(z).includes('FULANO')&&z.restricoes.rouboFurto===null,'não vaza proprietário; ausente=null');
+delete process.env.VEICULO_PROVIDER_URL;
+let r=await call(veic,{query:{placa:'ABC1D23'}}); t(r.code===501,'sem provedor 501');
+r=await call(saude); t(r.b.veiculo===false,'saude sem provedor');
+process.env.VEICULO_PROVIDER_URL='mock';
+r=await call(saude); t(r.b.veiculo===true,'saude mock');
+r=await call(veic,{query:{placa:'abc1d99'}}); t(r.code===200&&r.b.restricoes.gravame===true&&r.b.historico.sinistroPerdaTotal===null&&r.b.debitos.ipva===1830.5,'mock ruim');
+r=await call(veic,{query:{placa:'ABC1D23'}}); t(r.b.restricoes.gravame===false&&r.b.restricoes.rouboFurto===false,'mock limpo');
+r=await call(veic,{query:{placa:'X'}}); t(r.code===400,'placa inválida');
+r=await call(veic,{query:{placa:'ABC1D23'},origin:'https://mal.com'}); t(r.code===403,'origem bloqueada');
+r=await call(veic,{query:{placa:'ABC1D23'},origin:'https://app.test'}); t(r.code===200,'mesma origem ok');
+r=await call(fipe,{query:{tipo:'carros',path:'../../etc'}}); t(r.code===400,'fipe bloqueia caminho');
+r=await call(fipe,{query:{tipo:'avioes',path:'marcas'}}); t(r.code===400,'fipe tipo inválido');
+console.log('backend:',n,'asserções OK');
