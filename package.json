@@ -1,0 +1,8 @@
+{
+  "name": "dossie-veicular",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Dossiê Veicular — análise pré-compra de veículos usados (EDP Sistemas)",
+  "engines": { "node": ">=20" }
+}
