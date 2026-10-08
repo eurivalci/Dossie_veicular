@@ -25,6 +25,10 @@ with sync_playwright() as p:
     ok(ev("__DV.num('1.234,56')")==1234.56 and ev("__DV.num('50000')")==50000 and ev("__DV.num('50.000')")==50000 and ev("__DV.num('R$ 12.500')")==12500,'parser BRL')
     # estado inicial
     ok(pg.locator('#vTitle').inner_text()=='Laudo incompleto','inicial incompleto')
+    ok(pg.input_value('#uf')=='','UF começa vazia')
+    ok('Escolha a UF' in pg.inner_text('#listConsultas'),'Detran pede UF')
+    pg.select_option('#uf','MG')
+    ok(pg.locator('#listConsultas a[href="https://www.detran.mg.gov.br/"]').count()>=3,'links Detran-MG')
     pg.fill('#placa','abc1d23'); ok(pg.input_value('#placa')=='ABC1D23','normaliza placa')
     pg.fill('#renavam','00639884962'); ok('confere' in pg.inner_text('#renavamMsg'),'msg renavam')
     pg.fill('#chassi','9bwzzz377vt004251'); pg.fill('#anoMod','2014')
@@ -63,8 +67,10 @@ with sync_playwright() as p:
     bad=ev("(()=>{try{__DV.sanitize({schema:9});return 'aceitou'}catch(e){return e.message}})()")
     ok('compatível' in bad,'rejeita schema errado')
     san=ev("""__DV.sanitize({schema:1,v:{placa:'X'.repeat(999),uf:'ZZ',evil:1},c:{roubo:{s:'hack',n:'a'},gravame:{s:'ok'}},i:{},g:{},f:{}})""")
-    ok(len(san['v']['placa'])==200 and san['v']['uf']=='CE' and 'evil' not in san['v'] and san['c']['roubo']['s'] is None and san['c']['gravame']['s']=='ok','sanitiza importação')
+    ok(len(san['v']['placa'])==200 and san['v']['uf']=='' and 'evil' not in san['v'] and san['c']['roubo']['s'] is None and san['c']['gravame']['s']=='ok','sanitiza importação')
     # validadores de documento do vendedor
+    ok(ev("__DV.achados({placa:'ABC1D23',uf:''},null).some(x=>x.t.startsWith('UF de registro'))"),'achado UF ausente')
+    ok(ev("UFS.length")==27 and ev("UFS.every(u=>detranUrl(u).endsWith('.gov.br/'))"),'27 Detrans .gov.br')
     ok(ev("__DV.V.doc('529.982.247-25').ok")==True and ev("__DV.V.doc('529.982.247-24').ok")==False,'CPF')
     ok(ev("__DV.V.doc('11.222.333/0001-81').ok")==True,'CNPJ numérico')
     ok(ev("__DV.V.doc('12.ABC.345/01DE-35').ok")==True,'CNPJ alfanumérico (exemplo RFB)')
